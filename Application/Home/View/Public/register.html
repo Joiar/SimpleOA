@@ -1,4 +1,4 @@
-<extend name="./master" />
+<extend name="./master"/>
 
 <block name="title">员工注册</block>
 
@@ -14,29 +14,34 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form role="form">
+                <form role="form" action="{:U('Public/doRegister')}" method="post">
                     <div class="box-body">
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1">员工姓名</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="请输入员工姓名">
+                                <label for="user_name">员工姓名</label>
+                                <input type="text" name="register_data[user_name]" class="form-control" id="user_name"
+                                       placeholder="请输入员工姓名">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="exampleInputPassword1">员工号</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入员工号">
+                                <label for="user_no">员工号</label>
+                                <input type="text" name="register_data[user_no]" class="form-control" id="user_no"
+                                       placeholder="请输入员工号">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label>所属部门</label>
-                                <select class="form-control">
-                                    <option>请选择</option>
+                                <select class="form-control" id="departmentSelect" name="register_data[department_id]">
+                                    <option value="0">请选择</option>
+                                    <foreach name="department_list" item="vo">
+                                        <option value="{$vo.department_id}">{$vo.department_name}</option>
+                                    </foreach>
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>员工职位</label>
-                                <select class="form-control">
-                                    <option>请选择</option>
+                                <select class="form-control" id="positionSelect" name="register_data[position_id]">
+                                    <option value="0">请选择</option>
                                 </select>
                             </div>
                         </div>
@@ -44,11 +49,48 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">注册</button>
                     </div>
                 </form>
             </div>
             <!-- /.box -->
         </div>
     </div>
+</block>
+
+<block name="script">
+    <script>
+        $('#departmentSelect').change(function () {
+            $('#positionSelect').html('<option value="0">请选择</option>');
+            var selectId = $(this).val();
+            if (selectId != 0) {
+                getPositionListByAJAX(selectId);
+            }
+        });
+
+        // 获取职位信息
+        function getPositionListByAJAX(ID) {
+            $.ajax({
+                type: "POST",
+                url: "{:U('Public/getPositionList')}",
+                data: {department_id: ID},
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        var str = '';
+                        for (var i = 0, count = data.data.length; i < count; i++) {
+                            str += '<option value="' + data.data[i].position_id + '">' + data.data[i].position_name + '</option>';
+                        }
+                        $('#positionSelect').append(str);
+                    } else {
+                        alert(data.msg);
+                        $('#departmentSelect').val(0);
+                    }
+                },
+                error: function (err) {
+                    alert('网络错误，请稍后重试');
+                }
+            });
+        }
+    </script>
 </block>
