@@ -1,6 +1,10 @@
 <?php
 return array(
 	//'配置项'=>'配置值'
+
+    // debug trace
+    'SHOW_PAGE_TRACE' =>true,
+
     // APP config
     'APP_NAME' => 'OA',
 
