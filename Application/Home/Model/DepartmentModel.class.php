@@ -18,8 +18,7 @@ class DepartmentModel extends Model
 
     public function getCount()
     {
-        $countNum = $this->count();
-        return $countNum;
+        return $this->count();
     }
 
     public function addDepartment($name)
@@ -33,7 +32,6 @@ class DepartmentModel extends Model
 
     public function deleteDepartment($id)
     {
-        $res = $this->delete($id);
-        return $res;
+        return $this->delete($id);
     }
 }

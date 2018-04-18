@@ -1,0 +1,129 @@
+<extend name="./master"/>
+
+<block name="title">差旅费用审批列表</block>
+
+<block name="desc">Cost approval list</block>
+
+<block name="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">审批列表</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名称</th>
+                            <th>飞机车船票</th>
+                            <th>市内交通费</th>
+                            <th>住宿费</th>
+                            <th>其他费用</th>
+                            <th>总计</th>
+                            <th>状态</th>
+                            <th>发起时间</th>
+                            <th>操作</th>
+                        </tr>
+                        <foreach name="cost_list" item="vo">
+                            <tr>
+                                <td>{$vo.cost_id}</td>
+                                <td>{$vo.user_name}</td>
+                                <td>{$vo.ticket}</td>
+                                <td>{$vo.traffic}</td>
+                                <td>{$vo.stay}</td>
+                                <td>{$vo.other}</td>
+                                <td>{$vo.total}</td>
+                                <td>
+                                    <if condition="$vo.status eq 'WAIT_CONFIRM'">
+                                        待审批
+                                        <else />
+                                        <if condition="$vo.confirm_status eq 'WAIT_CONFIRM'">
+                                            初审通过，等待上级确认
+                                            <elseif condition="$vo.confirm_status eq 'SUCCESS'" />
+                                            审批通过
+                                            <else />
+                                            审批拒绝
+                                        </if>
+                                    </if>
+                                </td>
+                                <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
+                                <td>
+                                    <if condition="$vo.status eq 'WAIT_CONFIRM'">
+                                        <button data-id="{$vo.cost_id}"
+                                                class="btn btn-success btn-sm change-status-btn"
+                                                data-status="SUCCESS">
+                                            <i class="fa fa-trash"></i> 同意
+                                        </button>
+                                        <button data-id="{$vo.cost_id}"
+                                                class="btn btn-danger btn-sm change-status-btn"
+                                                data-status="REFUSED">
+                                            <i class="fa fa-trash"></i> 拒绝
+                                        </button>
+                                        <elseif condition="$vo.confirm_status eq 'WAIT_CONFIRM'"/>
+                                        <button data-id="{$vo.cost_id}"
+                                                class="btn btn-success btn-sm confirm-status-btn"
+                                                data-status="SUCCESS">
+                                            <i class="fa fa-trash"></i> 同意
+                                        </button>
+                                        <button data-id="{$vo.cost_id}"
+                                                class="btn btn-danger btn-sm confirm-status-btn"
+                                                data-status="REFUSED">
+                                            <i class="fa fa-trash"></i> 拒绝
+                                        </button>
+                                    </if>
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    {$page}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $('.change-status-btn').click(function () {
+            var cost_id = $(this).attr('data-id');
+            var status = $(this).attr('data-status');
+            $.post(
+                "{:U('Approval/changeCostStatus')}",
+                {cost_id: cost_id, status: status},
+                function (res) {
+                    if (res.status == 1) {
+                        location.reload();
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                'json'
+            );
+        });
+
+        $('.confirm-status-btn').click(function () {
+            var cost_id = $(this).attr('data-id');
+            var status = $(this).attr('data-status');
+            $.post(
+                "{:U('Approval/confirmCostStatus')}",
+                {cost_id: cost_id, status: status},
+                function (res) {
+                    if (res.status == 1) {
+                        location.reload();
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                'json'
+            );
+        });
+    </script>
+</block>

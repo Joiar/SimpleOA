@@ -1,0 +1,144 @@
+<extend name="./master"/>
+
+<block name="title">职位管理</block>
+
+<block name="desc">Position Manage</block>
+
+<block name="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">职位列表</h3>
+
+                    <div class="box-tools">
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add-department">
+                            <i class="fa fa-plus"></i> 添加职位
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <th>职位名称</th>
+                            <th>所属部门</th>
+                            <th>是否为管理者</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                        <foreach name="position_list" item="vo">
+                            <tr>
+                                <td>{$vo.position_id}</td>
+                                <td>{$vo.position_name}</td>
+                                <td>{$vo.department_name}</td>
+                                <td>
+                                    <if condition="$vo.is_admin eq 'Y'">
+                                        是
+                                    <else />
+                                        否
+                                    </if>
+                                </td>
+                                <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
+                                <td>
+                                    <button data-id="{$vo.position_id}" class="btn btn-primary btn-sm del-btn">
+                                        <i class="fa fa-trash"></i> 编辑
+                                    </button>
+                                    <button data-id="{$vo.position_id}" class="btn btn-danger btn-sm del-btn">
+                                        <i class="fa fa-trash"></i> 删除
+                                    </button>
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    {$page}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-add-department">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">添加职位</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="{:U('Position/add')}" method="post" id="add-position-form">
+                        <div class="box-body">
+                            <div class="form-group col-md-12">
+                                <label>职位名称</label>
+                                <input type="text" name="formdata[position_name]" class="form-control" placeholder="请输入职位名称" id="position-name">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>所属部门</label>
+                                <select class="form-control" name="formdata[department_id]">
+                                    <foreach name="department_list" item="vo">
+                                        <option value="{$vo.department_id}">{$vo.department_name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>是否为该部门的管理者</label>
+                                <div class="radio form-check-inline">
+                                    <label>
+                                        <input type="radio" name="formdata[is_admin]" value="Y" checked>是
+                                    </label>
+                                </div>
+                                <div class="radio form-check-inline">
+                                    <label>
+                                        <input type="radio" name="formdata[is_admin]" value="N">否
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="add-position">添加</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $('#add-position').click(function () {
+            if ($('#position-name').val().length == 0) {
+                alert('请输入职位名称');
+                return;
+            }
+            $('#add-position-form').submit();
+        });
+
+        $('.del-btn').click(function () {
+            var department_id = $(this).attr('data-id');
+            $.post(
+                "{:U('Department/delete')}",
+                {department_id: department_id},
+                function (res) {
+                    if (res.status == 1) {
+                        location.reload();
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                'json'
+            );
+        });
+    </script>
+</block>

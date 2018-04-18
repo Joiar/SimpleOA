@@ -6,11 +6,19 @@ use Think\Controller;
 
 class ApprovalController extends Controller
 {
+    /**
+     * add
+     * 2018/4/18
+     */
     public function add()
     {
         $this->display('add');
     }
 
+    /**
+     * doAdd
+     * 2018/4/18
+     */
     public function doAdd()
     {
         $approvalData = I('post.approval_data');
@@ -21,6 +29,18 @@ class ApprovalController extends Controller
             $this->redirect('Approval/showList');
         } else {
             $this->error('添加失败，请重试');
+        }
+    }
+
+    public function addCost()
+    {
+        $costMdl = D('cost');
+        $params = I('post.formdata');
+        $res = $costMdl->create($params);
+        if ($res) {
+            $this->redirect('Approval/showList');
+        } else {
+            $this->error('发起费用失败，请重试');
         }
     }
 
@@ -45,6 +65,27 @@ class ApprovalController extends Controller
         $this->display('list');
     }
 
+    public function showCostList()
+    {
+        $pageIndex = I('get.p') ? I('get.p') : 1;
+        $costMdl = D('cost');
+        $costList = $costMdl->getList(true, $pageIndex);
+        $this->assign('cost_list', $costList);
+
+        $count = $costMdl->getCount();
+        $Page = new \Think\Page($count, C('PAGE_SIZE'));
+        $Page->lastSuffix = false;//最后一页不显示为总页数
+        $Page->setConfig('header','<li class="disabled hwh-page-info"</li>');
+        $Page->setConfig('prev','«');
+        $Page->setConfig('next','»');
+        $Page->setConfig('last','末页');
+        $Page->setConfig('first','首页');
+        $Page->setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
+        $show = $this->bootstrap_page_style($Page->show());
+        $this->assign('page', $show);
+        $this->display('costList');
+    }
+
     /**
      * Thinkphp默认分页样式转Bootstrap分页样式
      * @author Carl
@@ -61,5 +102,105 @@ class ApprovalController extends Controller
             $page_show = str_replace('</a>','</a></li>',$page_show);
         }
         return $page_show;
+    }
+
+    /**
+     * changeStatus
+     * 2018/4/18
+     */
+    public function changeStatus()
+    {
+        $approval_id = I('post.approval_id');
+        $status = I('post.status');
+        $approvalMdl = D('approval');
+        $res = $approvalMdl->changeStatus($approval_id, $status);
+        if ($res) {
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'msg' => '操作成功',
+                'data' => array()
+            ));
+        } else {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '操作失败',
+                'data' => array()
+            ));
+        }
+    }
+
+    /**
+     * confirmStatus
+     * 2018/4/18
+     */
+    public function confirmStatus()
+    {
+        $approval_id = I('post.approval_id');
+        $status = I('post.status');
+        $approvalMdl = D('approval');
+        $res = $approvalMdl->confirmStatus($approval_id, $status);
+        if ($res) {
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'msg' => '操作成功',
+                'data' => array()
+            ));
+        } else {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '操作失败',
+                'data' => array()
+            ));
+        }
+    }
+
+    /**
+     * changeStatus
+     * 2018/4/18
+     */
+    public function changeCostStatus()
+    {
+        $cost_id = I('post.cost_id');
+        $status = I('post.status');
+        $costMdl = D('cost');
+        $res = $costMdl->changeStatus($cost_id, $status);
+        if ($res) {
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'msg' => '操作成功',
+                'data' => array()
+            ));
+        } else {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '操作失败',
+                'data' => array()
+            ));
+        }
+    }
+
+    /**
+     * confirmStatus
+     * 2018/4/18
+     */
+    public function confirmCostStatus()
+    {
+        $cost_id = I('post.cost_id');
+        $status = I('post.status');
+        $costMdl = D('cost');
+        $res = $costMdl->confirmStatus($cost_id, $status);
+        if ($res) {
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'msg' => '操作成功',
+                'data' => array()
+            ));
+        } else {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '操作失败',
+                'data' => array()
+            ));
+        }
     }
 }

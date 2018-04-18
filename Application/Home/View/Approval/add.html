@@ -14,11 +14,11 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" action="{:U('Approval/doAdd')}" method="post">
+                <form role="form" action="{:U('Approval/doAdd')}" method="post" id="approval-form">
                     <div class="box-body">
                         <div class="form-group">
                             <label>出差目的地</label>
-                            <input type="text" name="approval_data[destination]" class="form-control" placeholder="请输入目的地">
+                            <input type="text" name="approval_data[destination]" class="form-control" placeholder="请输入目的地" id="destination">
                         </div>
                         <div class="form-group">
                             <label>出差时间</label>
@@ -43,7 +43,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">发起</button>
+                        <button type="button" class="btn btn-primary" id="add-approval">发起</button>
                     </div>
                 </form>
             </div>
@@ -57,6 +57,13 @@
     <script src="__PUBLIC__/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script>
         $('#reservation').daterangepicker();
+        $('#add-approval').click(function () {
+            if ($('#destination').val().length == 0) {
+                alert('请输入目的地');
+                return;
+            }
+            $('#approval-form').submit();
+        });
     </script>
 </block>
 
