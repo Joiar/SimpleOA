@@ -37,7 +37,6 @@ class UserModel extends Model
     public function saveNewUser($params) {
         $params['password'] = password_hash('888888', PASSWORD_DEFAULT);
         $params['created_at'] = time();
-        $res = $this->add($params);
-        return $res;
+        return $this->add($params);
     }
 }
