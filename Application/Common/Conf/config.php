@@ -19,4 +19,12 @@ return array(
 
     // pagination config
     'PAGE_SIZE'             =>  10,
+
+    // transportation config
+    'TRANSPROTATION' => array(
+        'CAR' => '客运汽车',
+        'TRAIN' => '火车',
+        'SHIP' => '轮船',
+        'PLANE' => '飞机'
+    )
 );

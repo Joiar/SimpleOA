@@ -29,7 +29,7 @@ class UserModel extends Model
         $userData = $this->where($map)
             ->join('__DEPARTMENT__ ON __USER__.department_id = __DEPARTMENT__.department_id')
             ->join('__POSITION__ ON __USER__.position_id = __POSITION__.position_id')
-            ->field('user_id,user_name,user_no,department_name,position_name,OA_USER.created_at')
+            ->field('user_id,user_name,user_no,department_name,position_name,oa_user.created_at')
             ->find();
         session('UserData', $userData);
     }
