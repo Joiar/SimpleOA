@@ -1,0 +1,65 @@
+<extend name="./master"/>
+
+<block name="title">发起审批</block>
+
+<block name="desc">Initiate approval</block>
+
+<block name="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">审批信息</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="{:U('Approval/doAdd')}" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>出差目的地</label>
+                            <input type="text" name="approval_data[destination]" class="form-control" placeholder="请输入目的地">
+                        </div>
+                        <div class="form-group">
+                            <label>出差时间</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="reservation" name="approval_data[time]">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>交通工具</label>
+                            <select class="form-control" name="approval_data[transportation]">
+                                <option value="CAR">客运汽车</option>
+                                <option value="TRAIN">火车</option>
+                                <option value="PLANE">飞机</option>
+                                <option value="SHIP">轮船</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">发起</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__PUBLIC__/bower_components/moment/min/moment.min.js"></script>
+    <script src="__PUBLIC__/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script>
+        $('#reservation').daterangepicker();
+    </script>
+</block>
+
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+</block>

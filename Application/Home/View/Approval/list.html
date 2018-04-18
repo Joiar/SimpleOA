@@ -1,0 +1,114 @@
+<extend name="./master"/>
+
+<block name="title">审批列表</block>
+
+<block name="desc">Approval list</block>
+
+<block name="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">部门列表</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>审批单ID</th>
+                            <th>用户名称</th>
+                            <th>出差目的地</th>
+                            <th>出差时间</th>
+                            <th>交通工具</th>
+                            <th>发起时间</th>
+                            <th>操作</th>
+                        </tr>
+                        <foreach name="approval_list" item="vo">
+                            <tr>
+                                <td>{$vo.approval_id}</td>
+                                <td>{$vo.user_name}</td>
+                                <td>{$vo.destination}</td>
+                                <td>{$vo.time}</td>
+                                <td>{$vo.transportation}</td>
+                                <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
+                                <td>
+                                    <button data-id="{$vo.department_id}" class="btn btn-success btn-sm del-btn">
+                                        <i class="fa fa-trash"></i> 同意
+                                    </button>
+                                    <button data-id="{$vo.department_id}" class="btn btn-danger btn-sm del-btn">
+                                        <i class="fa fa-trash"></i> 拒绝
+                                    </button>
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    {$page}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-add-department">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">添加部门</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="{:U('Department/add')}" method="post" id="add-department-form">
+                        <div class="box-body">
+                            <div class="form-group col-md-12">
+                                <label for="department_name">部门名称</label>
+                                <input type="text" name="department_name" class="form-control" id="department_name"
+                                       placeholder="请输入部门名称">
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="add-department">添加</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $('#add-department').click(function () {
+            if ($('#department_name').val().length == 0) {
+                alert('请输入部门名称');
+                return;
+            }
+            $('#add-department-form').submit();
+        });
+
+        $('.del-btn').click(function () {
+            var department_id = $(this).attr('data-id');
+            $.post(
+                "{:U('Department/delete')}",
+                {department_id: department_id},
+                function (res) {
+                    if (res.status == 1) {
+                        location.reload();
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                'json'
+            );
+        });
+    </script>
+</block>

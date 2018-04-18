@@ -8,7 +8,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
-        <block name="title"></block>-{:C('APP_NAME')}
+        <block name="title"></block>
+        -{:C('APP_NAME')}
     </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -34,8 +35,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <block name="style"></block>
 </head>
-<block name="style"></block>
 
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -117,17 +118,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">菜单</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="{:U('Index/index')}"><i class="fa fa-dashboard"></i> <span>仪表盘</span></a></li>
+                <li class="active"><a href="{:U('Index/index')}"><i class="fa fa-dashboard"></i> <span>仪表盘</span></a>
+                </li>
                 <li><a href="{:U('Public/register')}"><i class="fa fa-users"></i> <span>员工注册</span></a></li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-cogs"></i> <span>公司管理</span>
                         <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{:U('Department/showList')}">部门管理</a></li>
                         <li><a href="#">职位管理</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-bus"></i> <span>差旅管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{:U('Approval/add')}">发起审批</a></li>
+                        <li><a href="{:U('Approval/showList')}">审批列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -142,7 +155,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <section class="content-header">
             <h1>
                 <block name="title"></block>
-                <small><block name="desc"></block></small>
+                <small>
+                    <block name="desc"></block>
+                </small>
             </h1>
         </section>
 
