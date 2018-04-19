@@ -43,7 +43,7 @@
                                 </td>
                                 <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
                                 <td>
-                                    <button data-id="{$vo.position_id}" class="btn btn-primary btn-sm del-btn">
+                                    <button data-id="{$vo.position_id}" class="btn btn-primary btn-sm">
                                         <i class="fa fa-trash"></i> 编辑
                                     </button>
                                     <button data-id="{$vo.position_id}" class="btn btn-danger btn-sm del-btn">
@@ -126,10 +126,10 @@
         });
 
         $('.del-btn').click(function () {
-            var department_id = $(this).attr('data-id');
+            var position_id = $(this).attr('data-id');
             $.post(
-                "{:U('Department/delete')}",
-                {department_id: department_id},
+                "{:U('Position/delete')}",
+                {position_id: position_id},
                 function (res) {
                     if (res.status == 1) {
                         location.reload();
