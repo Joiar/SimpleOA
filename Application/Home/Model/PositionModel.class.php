@@ -38,4 +38,9 @@ class PositionModel extends Model
         }
         return $this->add($params);
     }
+
+    public function deletePosition($id)
+    {
+        return $this->delete($id);
+    }
 }

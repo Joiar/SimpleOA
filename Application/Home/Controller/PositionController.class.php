@@ -62,4 +62,31 @@ class PositionController extends Controller
             $this->error('添加失败，请重试');
         }
     }
+
+    public function delete()
+    {
+        $position_id = I('post.position_id');
+        $userMdl = D('user');
+        $issetUser = $userMdl->where(array('position_id' => $position_id))->find();
+        $issetUser && $this->ajaxReturn(array(
+            'status' => 0,
+            'msg' => '该职位下已有员工，不可删除',
+            'data' => array()
+        ));
+        $positionMdl = D('position');
+        $res = $positionMdl->deletePosition($position_id);
+        if ($res) {
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'msg' => '删除成功',
+                'data' => array()
+            ));
+        } else {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '删除失败',
+                'data' => array()
+            ));
+        }
+    }
 }
