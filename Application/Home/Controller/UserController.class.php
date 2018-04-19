@@ -4,36 +4,13 @@ namespace Home\Controller;
 
 use Think\Controller;
 
-class DepartmentController extends Controller
+class UserController extends Controller
 {
-
     public function showList()
     {
         $pageIndex = I('get.p') ? I('get.p') : 1;
-        $departmentMdl = D('department');
-        $department_list = $departmentMdl->getList(true, $pageIndex);
-        $this->assign('department_list', $department_list);
-
-        $count = $departmentMdl->getCount();
-        $Page = new \Think\Page($count, C('PAGE_SIZE'));
-        $Page->lastSuffix = false;//最后一页不显示为总页数
-        $Page->setConfig('header','<li class="disabled hwh-page-info"</li>');
-        $Page->setConfig('prev','«');
-        $Page->setConfig('next','»');
-        $Page->setConfig('last','末页');
-        $Page->setConfig('first','首页');
-        $Page->setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
-        $show = $this->bootstrap_page_style($Page->show());
-        $this->assign('page', $show);
-
-        $this->display('index');
-    }
-
-    public function showMemberList()
-    {
-        $pageIndex = I('get.p') ? I('get.p') : 1;
         $userMdl = D('user');
-        $userList = $userMdl->getList(true, $pageIndex, true);
+        $userList = $userMdl->getList(true, $pageIndex);
         $this->assign('user_list', $userList);
 
         $count = $userMdl->getCount();
@@ -47,8 +24,7 @@ class DepartmentController extends Controller
         $Page->setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
         $show = $this->bootstrap_page_style($Page->show());
         $this->assign('page', $show);
-
-        $this->display('memberlist');
+        $this->display('list');
     }
 
     /**
@@ -69,23 +45,11 @@ class DepartmentController extends Controller
         return $page_show;
     }
 
-    public function add()
-    {
-        $department_name = I('post.department_name');
-        $departmentMdl = D('department');
-        $res = $departmentMdl->addDepartment($department_name);
-        if ($res) {
-            $this->redirect('Department/showList');
-        } else {
-            $this->error('添加失败，请重试');
-        }
-    }
-
     public function delete()
     {
-        $department_id = I('post.department_id');
-        $departmentMdl = D('department');
-        $res = $departmentMdl->deleteDepartment($department_id);
+        $user_id = I('post.user_id');
+        $userMdl = D('user');
+        $res = $userMdl->deleteUser($user_id);
         if ($res) {
             $this->ajaxReturn(array(
                 'status' => 1,
@@ -98,29 +62,6 @@ class DepartmentController extends Controller
                 'msg' => '删除失败',
                 'data' => array()
             ));
-        }
-    }
-
-    public function setting()
-    {
-        $this->display('setting');
-    }
-
-    public function addNotice()
-    {
-        $this->display('addnotice');
-    }
-
-    public function doAddNotice()
-    {
-        $params = I('post.formdata');
-        $params['department_id'] = session('UserData.department_id');
-        $params['user_id'] = session('UserData.user_id');
-        $res = M('notice')->add($params);
-        if ($res) {
-            $this->redirect('Index/index');
-        } else {
-            $this->error('发布失败，请重试');
         }
     }
 }

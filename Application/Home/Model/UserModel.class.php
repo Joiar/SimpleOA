@@ -39,4 +39,33 @@ class UserModel extends Model
         $params['created_at'] = time();
         return $this->add($params);
     }
+
+    public function getList($pagination = false, $pageIndex = null, $department_only = false)
+    {
+        $map = array();
+        $department_only && $map = array('department_id' => session('UserData.department_id'));
+        if ($pagination) {
+            $userList = $this->where($map)->page($pageIndex . ',' . C('PAGE_SIZE'))->select();
+        } else {
+            $userList = $this->where($map)->select();
+        }
+        $userList = array_map(function ($value) {
+            $departmentName = M('department')->field('department_name')->find($value['department_id']);
+            $value['department_name'] = $departmentName['department_name'];
+            $positionName = M('position')->field('position_name')->find($value['position_id']);
+            $value['position_name'] = $positionName['position_name'];
+            return $value;
+        }, $userList);
+        return $userList;
+    }
+
+    public function getCount()
+    {
+        return $this->count();
+    }
+
+    public function deleteUser($id)
+    {
+        return $this->delete($id);
+    }
 }

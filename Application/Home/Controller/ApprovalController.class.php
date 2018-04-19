@@ -23,6 +23,7 @@ class ApprovalController extends Controller
     {
         $approvalData = I('post.approval_data');
         $approvalData['user_id'] = session('UserData.user_id');
+        $approvalData['department_id'] = session('UserData.department_id');
         $approvalMdl = D('approval');
         $res = $approvalMdl->create($approvalData);
         if ($res) {
@@ -36,6 +37,7 @@ class ApprovalController extends Controller
     {
         $costMdl = D('cost');
         $params = I('post.formdata');
+        $params['department_id'] = session('UserData.department_id');
         $res = $costMdl->create($params);
         if ($res) {
             $this->redirect('Approval/showList');
@@ -46,9 +48,14 @@ class ApprovalController extends Controller
 
     public function showList()
     {
+        if (session('UserData.department_id') != 1) {
+            $map = array('department_id' => session('UserData.department_id'));
+        } else {
+            $map = array();
+        }
         $pageIndex = I('get.p') ? I('get.p') : 1;
         $approvalMdl = D('approval');
-        $approvalList = $approvalMdl->getList(true, $pageIndex);
+        $approvalList = $approvalMdl->getList(true, $pageIndex, $map);
         $this->assign('approval_list', $approvalList);
 
         $count = $approvalMdl->getCount();
@@ -67,6 +74,11 @@ class ApprovalController extends Controller
 
     public function showCostList()
     {
+        if (session('UserData.department_id') != 2) {
+            $map = array('department_id' => session('UserData.department_id'));
+        } else {
+            $map = array();
+        }
         $pageIndex = I('get.p') ? I('get.p') : 1;
         $costMdl = D('cost');
         $costList = $costMdl->getList(true, $pageIndex);

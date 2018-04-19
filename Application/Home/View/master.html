@@ -118,17 +118,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">菜单</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li><a href="{:U('Index/index')}"><i class="fa fa-dashboard"></i> <span>仪表盘</span></a>
-                </li>
+                <li><a href="{:U('Index/index')}"><i class="fa fa-dashboard"></i> <span>仪表盘</span></a></li>
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-users"></i> <span>员工管理</span>
+                    <a href="#"><i class="fa fa-user"></i> <span>部门管理</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{:U('Public/register')}">员工注册</a></li>
-                        <li><a href="{:U('User/showList')}">员工列表</a></li>
+                        <li><a href="{:U('Department/showMemberList')}">部门成员列表</a></li>
+                        <li><a href="{:U('Department/addNotice')}">创建部门通知</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -140,6 +139,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <ul class="treeview-menu">
                         <li><a href="{:U('Department/showList')}">部门管理</a></li>
                         <li><a href="{:U('Position/showList')}">职位管理</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-users"></i> <span>员工管理</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <if condition="$Think.session.UserData.department_id eq 1">
+                            <li><a href="{:U('Public/register')}">员工注册</a></li>
+                        </if>
+                        <li><a href="{:U('User/showList')}">员工列表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
