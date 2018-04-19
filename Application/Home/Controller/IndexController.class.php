@@ -8,7 +8,16 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        dump(session());
+        $noticeList = M('notice')->select();
+        $this->assign('notice_list', $noticeList);
+
+        $count = array(
+            'userCount' => D('user')->getCount(),
+            'departmentCount' => D('department')->getCount(),
+            'positionCount' => D('position')->getCount(),
+            'approval' => D('approval')->getCount()
+        );
+        $this->assign('count', $count);
         $this->display('index');
     }
 }

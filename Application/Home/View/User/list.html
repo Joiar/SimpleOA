@@ -1,0 +1,71 @@
+<extend name="./master"/>
+
+<block name="title">员工列表</block>
+
+<block name="desc">Employee Manage</block>
+
+<block name="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">员工列表</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>员工号</th>
+                            <th>员工名称</th>
+                            <th>所属部门</th>
+                            <th>职位</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                        <foreach name="user_list" item="vo">
+                            <tr>
+                                <td>{$vo.user_no}</td>
+                                <td>{$vo.user_name}</td>
+                                <td>{$vo.department_name}</td>
+                                <td>{$vo.position_name}</td>
+                                <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
+                                <td>
+                                    <button data-id="{$vo.user_id}" class="btn btn-danger btn-sm del-btn">
+                                        <i class="fa fa-trash"></i> 删除
+                                    </button>
+                                </td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    {$page}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $('.del-btn').click(function () {
+            var user_id = $(this).attr('data-id');
+            $.post(
+                "{:U('User/delete')}",
+                {user_id: user_id},
+                function (res) {
+                    if (res.status == 1) {
+                        location.reload();
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                'json'
+            );
+        });
+    </script>
+</block>

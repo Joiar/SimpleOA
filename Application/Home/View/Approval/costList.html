@@ -51,28 +51,32 @@
                                 </td>
                                 <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
                                 <td>
-                                    <if condition="$vo.status eq 'WAIT_CONFIRM'">
-                                        <button data-id="{$vo.cost_id}"
-                                                class="btn btn-success btn-sm change-status-btn"
-                                                data-status="SUCCESS">
-                                            <i class="fa fa-trash"></i> 同意
-                                        </button>
-                                        <button data-id="{$vo.cost_id}"
-                                                class="btn btn-danger btn-sm change-status-btn"
-                                                data-status="REFUSED">
-                                            <i class="fa fa-trash"></i> 拒绝
-                                        </button>
-                                        <elseif condition="$vo.confirm_status eq 'WAIT_CONFIRM'"/>
-                                        <button data-id="{$vo.cost_id}"
-                                                class="btn btn-success btn-sm confirm-status-btn"
-                                                data-status="SUCCESS">
-                                            <i class="fa fa-trash"></i> 同意
-                                        </button>
-                                        <button data-id="{$vo.cost_id}"
-                                                class="btn btn-danger btn-sm confirm-status-btn"
-                                                data-status="REFUSED">
-                                            <i class="fa fa-trash"></i> 拒绝
-                                        </button>
+                                    <if condition="$Think.session.UserData.is_admin eq 'Y'">
+                                        <if condition="$vo.status eq 'WAIT_CONFIRM'">
+                                            <button data-id="{$vo.cost_id}"
+                                                    class="btn btn-success btn-sm change-status-btn"
+                                                    data-status="SUCCESS">
+                                                <i class="fa fa-trash"></i> 同意
+                                            </button>
+                                            <button data-id="{$vo.cost_id}"
+                                                    class="btn btn-danger btn-sm change-status-btn"
+                                                    data-status="REFUSED">
+                                                <i class="fa fa-trash"></i> 拒绝
+                                            </button>
+                                        <elseif condition="$Think.session.UserData.department_id eq 2"/>
+                                            <if condition="$vo.confirm_status eq 'WAIT_CONFIRM'">
+                                                <button data-id="{$vo.cost_id}"
+                                                        class="btn btn-success btn-sm confirm-status-btn"
+                                                        data-status="SUCCESS">
+                                                    <i class="fa fa-trash"></i> 同意
+                                                </button>
+                                                <button data-id="{$vo.cost_id}"
+                                                        class="btn btn-danger btn-sm confirm-status-btn"
+                                                        data-status="REFUSED">
+                                                    <i class="fa fa-trash"></i> 拒绝
+                                                </button>
+                                            </if>
+                                        </if>
                                     </if>
                                 </td>
                             </tr>

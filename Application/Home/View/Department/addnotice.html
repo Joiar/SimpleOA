@@ -1,0 +1,38 @@
+<extend name="./master"/>
+
+<block name="title">创建部门通知</block>
+
+<block name="desc">Create Department Notice</block>
+
+<block name="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">通知内容</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" action="{:U('Department/doAddNotice')}" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>标题</label>
+                            <input type="text" name="formdata[title]" class="form-control" placeholder="请输入标题" required>
+                        </div>
+                        <div class="form-group">
+                            <label>内容</label>
+                            <textarea class="form-control" name="formdata[content]" rows="5" placeholder="请输入内容" required></textarea>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">发布</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</block>

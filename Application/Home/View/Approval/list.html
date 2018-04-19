@@ -47,28 +47,32 @@
                                 </td>
                                 <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
                                 <td>
-                                    <if condition="$vo.status eq 'WAIT_CONFIRM'">
-                                        <button data-id="{$vo.approval_id}"
-                                                class="btn btn-success btn-sm change-status-btn"
-                                                data-status="SUCCESS">
-                                            <i class="fa fa-trash"></i> 同意
-                                        </button>
-                                        <button data-id="{$vo.approval_id}"
-                                                class="btn btn-danger btn-sm change-status-btn"
-                                                data-status="REFUSED">
-                                            <i class="fa fa-trash"></i> 拒绝
-                                        </button>
-                                    <elseif condition="$vo.confirm_status eq 'WAIT_CONFIRM'"/>
-                                        <button data-id="{$vo.approval_id}"
-                                                class="btn btn-success btn-sm confirm-status-btn"
-                                                data-status="SUCCESS">
-                                            <i class="fa fa-trash"></i> 同意
-                                        </button>
-                                        <button data-id="{$vo.approval_id}"
-                                                class="btn btn-danger btn-sm confirm-status-btn"
-                                                data-status="REFUSED">
-                                            <i class="fa fa-trash"></i> 拒绝
-                                        </button>
+                                    <if condition="$Think.session.UserData.is_admin eq 'Y'">
+                                        <if condition="$vo.status eq 'WAIT_CONFIRM'">
+                                            <button data-id="{$vo.approval_id}"
+                                                    class="btn btn-success btn-sm change-status-btn"
+                                                    data-status="SUCCESS">
+                                                <i class="fa fa-trash"></i> 同意
+                                            </button>
+                                            <button data-id="{$vo.approval_id}"
+                                                    class="btn btn-danger btn-sm change-status-btn"
+                                                    data-status="REFUSED">
+                                                <i class="fa fa-trash"></i> 拒绝
+                                            </button>
+                                        <elseif condition="$Think.session.UserData.department_id eq 1"/>
+                                            <if condition="$vo.confirm_status eq 'WAIT_CONFIRM'">
+                                                <button data-id="{$vo.approval_id}"
+                                                        class="btn btn-success btn-sm confirm-status-btn"
+                                                        data-status="SUCCESS">
+                                                    <i class="fa fa-trash"></i> 同意
+                                                </button>
+                                                <button data-id="{$vo.approval_id}"
+                                                        class="btn btn-danger btn-sm confirm-status-btn"
+                                                        data-status="REFUSED">
+                                                    <i class="fa fa-trash"></i> 拒绝
+                                                </button>
+                                            </if>
+                                        </if>
                                     <elseif condition="$vo.isSendCostRequest eq false"/>
                                         <if condition="$vo.confirm_status eq 'SUCCESS'">
                                             <button class="btn btn-info btn-sm add-cost-btn" data-id="{$vo.approval_id}" data-user-id="{$vo.user_id}">发起费用审批</button>

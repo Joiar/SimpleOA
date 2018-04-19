@@ -13,12 +13,12 @@ class ApprovalModel extends Model
         return $res;
     }
     
-    public function getList($pagination = false, $pageIndex = null)
+    public function getList($pagination = false, $pageIndex = null, $map)
     {
         if ($pagination) {
-            $approvalList = $this->page($pageIndex . ',' . C('PAGE_SIZE'))->select();
+            $approvalList = $this->where($map)->page($pageIndex . ',' . C('PAGE_SIZE'))->select();
         } else {
-            $approvalList = $this->select();
+            $approvalList = $this->where($map)->select();
         }
         $approvalList = array_map(function ($value) {
             $transportationData = C('TRANSPROTATION');
