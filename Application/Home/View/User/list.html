@@ -31,9 +31,16 @@
                                 <td>{$vo.position_name}</td>
                                 <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
                                 <td>
-                                    <button data-id="{$vo.user_id}" class="btn btn-danger btn-sm del-btn">
-                                        <i class="fa fa-trash"></i> 删除
-                                    </button>
+                                    <if condition="$Think.session.UserData.department_id eq 1">
+                                        <button data-id="{$vo.user_id}" class="btn btn-info btn-sm edit-btn">
+                                            <i class="fa fa-edit"></i> 修改密码
+                                        </button>
+                                        <button data-id="{$vo.user_id}" class="btn btn-danger btn-sm del-btn">
+                                            <i class="fa fa-trash"></i> 删除
+                                        </button>
+                                        <else/>
+                                        无
+                                    </if>
                                 </td>
                             </tr>
                         </foreach>
@@ -48,10 +55,42 @@
             <!-- /.box -->
         </div>
     </div>
+
+    <div class="modal fade" id="edit-modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="edit-form">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>新密码</label>
+                                <input type="password" name="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>确认密码</label>
+                                <input type="password" name="password_confirmation" class="form-control">
+                            </div>
+                            <input type="hidden" name="user_id" id="edit-user-id">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submit-edit-btn">修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </block>
 
 <block name="script">
     <script>
+        // 删除按钮click事件
         $('.del-btn').click(function () {
             var user_id = $(this).attr('data-id');
             $.post(
@@ -63,6 +102,36 @@
                     } else {
                         alert(res.msg);
                     }
+                },
+                'json'
+            );
+        });
+
+        // 修改密码按钮click事件
+        $('.edit-btn').click(function () {
+            var user_id = $(this).attr('data-id');
+            $('#edit-user-id').val(user_id);
+            $('#edit-modal').modal('show');
+        });
+
+        // 关闭modal清空form
+        $('#edit-modal').on('hidden.bs.modal', function (e) {
+            $('#edit-form input').each(function () {
+                $(this).val('');
+            });
+        })
+
+        // 修改按钮click事件
+        $('#submit-edit-btn').click(function () {
+            $.post(
+                "{:U('User/editPassword')}",
+                $('#edit-form').serialize(),
+                function (res) {
+                    if (res.status == 1) {
+                        $('#edit-modal').modal('hide');
+                    }
+                    alert(res.msg);
+
                 },
                 'json'
             );

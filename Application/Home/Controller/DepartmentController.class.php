@@ -116,6 +116,7 @@ class DepartmentController extends Controller
         $params = I('post.formdata');
         $params['department_id'] = session('UserData.department_id');
         $params['user_id'] = session('UserData.user_id');
+        $params['created_at'] = time();
         $res = M('notice')->add($params);
         if ($res) {
             $this->redirect('Index/index');
