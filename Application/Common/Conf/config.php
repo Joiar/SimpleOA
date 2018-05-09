@@ -6,7 +6,7 @@ return array(
 //    'SHOW_PAGE_TRACE' =>true,
 
     // APP config
-    'APP_NAME' => 'OA',
+    'APP_NAME' => '差旅审批系统',
 
     // DB config
     'DB_TYPE'               =>  'mysql',     // 数据库类型

@@ -12,9 +12,11 @@
                     <h3 class="box-title">成员列表</h3>
 
                     <div class="box-tools">
-                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add-department">
-                            <i class="fa fa-plus"></i> 添加部门
-                        </button>
+                        <if condition="$Think.session.UserData.department_id eq 1">
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add-department">
+                                <i class="fa fa-plus"></i> 添加部门
+                            </button>
+                        </if>
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -35,9 +37,13 @@
                                 <td>{$vo.position_name}</td>
                                 <td>{$vo.created_at|date="Y-m-d H:i:s",###}</td>
                                 <td>
-                                    <button data-id="{$vo.user_id}" class="btn btn-danger btn-sm del-btn">
-                                        <i class="fa fa-trash"></i> 删除
-                                    </button>
+                                    <if condition="$Think.session.UserData.department_id eq 1">
+                                        <button data-id="{$vo.user_id}" class="btn btn-danger btn-sm del-btn">
+                                            <i class="fa fa-trash"></i> 删除
+                                        </button>
+                                    <else />
+                                        无
+                                    </if>
                                 </td>
                             </tr>
                         </foreach>

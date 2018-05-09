@@ -34,7 +34,8 @@ class UserModel extends Model
         session('UserData', $userData);
     }
 
-    public function saveNewUser($params) {
+    public function saveNewUser($params)
+    {
         $params['password'] = password_hash('888888', PASSWORD_DEFAULT);
         $params['created_at'] = time();
         return $this->add($params);
@@ -67,5 +68,12 @@ class UserModel extends Model
     public function deleteUser($id)
     {
         return $this->delete($id);
+    }
+
+    public function editPassword($id, $password)
+    {
+        $params['password'] = password_hash($password, PASSWORD_DEFAULT);
+        $params['updated_at'] = time();
+        return $this->where(array('user_id' => $id))->save($params);
     }
 }

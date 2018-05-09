@@ -64,4 +64,42 @@ class UserController extends Controller
             ));
         }
     }
+
+    public function editPassword()
+    {
+        $user_id = I('post.user_id');
+        $password = I('post.password');
+        $password_confirmation = I('post.password_confirmation');
+
+        if (!$user_id || !$password || !$password_confirmation) {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '请完整输入密码再修改',
+                'data' => array()
+            ));
+        }
+
+        if ($password != $password_confirmation) {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '两次输入的密码不一致',
+                'data' => array()
+            ));
+        }
+        $userMdl = D('user');
+        $res = $userMdl->editPassword($user_id, $password);
+        if ($res) {
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'msg' => '修改成功',
+                'data' => array()
+            ));
+        } else {
+            $this->ajaxReturn(array(
+                'status' => 0,
+                'msg' => '修改失败',
+                'data' => array()
+            ));
+        }
+    }
 }
