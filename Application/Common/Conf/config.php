@@ -15,7 +15,7 @@ return array(
     'DB_USER'               =>  'root',      // 用户名
     'DB_PWD'                =>  'root',          // 密码
     'DB_PORT'               =>  '3306',        // 端口
-    'DB_PREFIX'             =>  'OA_',    // 数据库表前缀
+    'DB_PREFIX'             =>  'oa_',    // 数据库表前缀
 
     // pagination config
     'PAGE_SIZE'             =>  10,
