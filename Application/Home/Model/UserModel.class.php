@@ -34,6 +34,16 @@ class UserModel extends Model
         session('UserData', $userData);
     }
 
+    public function checkRegister($user_no)
+    {
+        $user = $this->where(array('user_no' => $user_no))->find();
+        if ($user) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function saveNewUser($params)
     {
         $params['password'] = password_hash('888888', PASSWORD_DEFAULT);

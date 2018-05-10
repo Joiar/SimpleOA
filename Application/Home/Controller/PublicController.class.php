@@ -41,6 +41,11 @@ class PublicController extends Controller
     {
         $request = I('post.register_data');
         $userMdl = D('user');
+        $isRegister = $userMdl->checkRegister($request['user_no']);
+        if ($isRegister) {
+            $this->error('该员工号已被注册');
+            exit();
+        }
         $regRes = $userMdl->saveNewUser($request);
         if ($regRes) {
             $this->success('注册成功', U('Public/register'));
